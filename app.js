@@ -17,20 +17,22 @@ app.use('/api/auth', authRouter);
 app.use('/api/board', boardRouter);
 app.use('/api/task', taskRouter);
 
-db.connect();
+app.listen(port, () => {
+  console.log(`> Example app listening on port ${port}`)
+  db.connect();
+});
 
-const start = async () => {
-  try {
-    app.listen(port, () => {
-      console.log(`> Example app listening on port ${port}`)
 
-    });
-  } catch (err) {
-    console.error(`Error on server startup: ${err.message}`);
-  }
-};
 
-start();
+// const start = async () => {
+//   try {
+//
+//   } catch (err) {
+//     console.error(`Error on server startup: ${err.message}`);
+//   }
+// };
+//
+// start();
 
 function errorHandler(err, req, res) {
   res.status(500).send({ message: err, status: 500 });
