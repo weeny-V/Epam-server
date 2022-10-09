@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 mongoose.Promise = global.Promise;
 
-const dbUrl = 'mongodb+srv://weeny:test@epam-angular-project.sfftnzq.mongodb.net/?retryWrites=true&w=majority';
+const dbUrl = process.env.DB_PATH;
 
 const connect = async () => {
   mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
