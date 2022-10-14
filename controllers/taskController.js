@@ -1,5 +1,6 @@
 const { Task } = require('../models/Tasks');
 const { saveTask } = require('../services/taskService');
+const { Comment } = require('../models/Comment');
 
 const getAllMyTasks = async (req, res, next) => {
   const { boardID } = req.params;
@@ -119,6 +120,8 @@ const deleteTask = async (req, res, next) => {
         status: 400,
       });
     }
+
+    await Comment.deleteMany({ taskID });
 
     return res.status(200).send({
       message: 'Tas successfully deleted',
