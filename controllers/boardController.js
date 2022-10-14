@@ -17,7 +17,7 @@ const getBoard = async (req, res) => {
 const createBoard = async (req, res, next) => {
   const { name, description } = req.body;
 
-  if (!name || !description) {
+  if (!name) {
     return res.status(400).send({
       message: 'Please specify all required parameters',
       status: 400,
