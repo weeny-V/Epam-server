@@ -23,6 +23,10 @@ const TaskSchema = new mongoose.Schema({
     required: true,
     enum: ['TODO', 'IN PROGRESS', 'DONE'],
   },
+  isArchived: {
+    type: Boolean,
+    required: true,
+  },
   createdAt: {
     type: String,
     required: true,

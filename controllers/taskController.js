@@ -82,8 +82,83 @@ const changeStatusByID = async (req, res, next) => {
   }
 }
 
+const editTask = async (req, res, next) => {
+  const { taskID } = req.params;
+  const { name } = req.body;
+
+  try {
+    const editTask = await Task.findOneAndUpdate({ _id: taskID }, {
+      $set: { name },
+    });
+
+    if (!editTask) {
+      return res.status(400).send({
+        message: 'We cannot find task with such an ID',
+        status: 400,
+      });
+    }
+
+    return res.status(200).send({
+      message: 'Task successfully edited',
+      status: 200,
+    })
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const deleteTask = async (req, res, next) => {
+  const { taskID } = req.params;
+
+  try {
+    const deletedTask = await Task.deleteOne({ _id: taskID });
+
+    if (!deletedTask) {
+      return res.status(400).send({
+        message: 'We cannot delete task with such an ID',
+        status: 400,
+      });
+    }
+
+    return res.status(200).send({
+      message: 'Tas successfully deleted',
+      status: 200,
+    })
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const updateArchiveStatus = async (req, res, next) => {
+  const { taskID } = req.params;
+  const { archive } = req.body;
+
+  try {
+    const updatedTask = await Task.findOneAndUpdate({ _id: taskID}, {
+      $set: { isArchived: !archive }
+    });
+
+    if (!updatedTask) {
+      return res.status(400).send({
+        message: 'We cannot find task with such an ID',
+        status: 400
+      });
+    }
+
+    return res.status(200).send({
+      message: 'Successfully changed',
+      status: 200,
+    })
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   getAllMyTasks,
   createTask,
   changeStatusByID,
+  editTask,
+  deleteTask,
+  updateArchiveStatus,
 };

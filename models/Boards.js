@@ -25,6 +25,18 @@ const BoardSchema = new mongoose.Schema({
   createdAt: {
     type: String,
     required: true,
+  },
+  todoColor: {
+    type: String,
+    required: true,
+  },
+  progressColor: {
+    type: String,
+    required: true,
+  },
+  doneColor: {
+    type: String,
+    required: true,
   }
 })
 

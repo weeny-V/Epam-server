@@ -1,5 +1,7 @@
 const { saveBoard } = require('../services/boardService');
 const { Board } = require('../models/Boards');
+const { Task } = require('../models/Tasks');
+const { Comment } = require('../models/Comment');
 
 const getBoard = async (req, res) => {
   const boards = await Board.find({
@@ -73,6 +75,8 @@ const deleteBoard = async (req, res) => {
     const deletedBoard = await Board.deleteOne({
       _id: boardID,
     });
+    await Task.deleteMany({ boardID });
+    await Comment.deleteMany({ boardID });
 
     if (!deletedBoard) {
       return res.status(400).send({
@@ -116,10 +120,36 @@ const getBoardById = async (req, res) => {
   }
 }
 
+const changeColumnColor = async (req, res, next) => {
+  const { boardID, column } = req.params;
+  const { color } = req.body;
+
+  try {
+    const board = await Board.updateOne({ _id: boardID}, {
+      $set: { [`${column}`]: color }
+    })
+
+    if (!board) {
+      return res.status(400).send({
+        message: 'We cannot change color of this column',
+        status: 400,
+      });
+    }
+
+    return res.status(200).send({
+      message: 'Color of this board successfully changed',
+      status: 200,
+    })
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   getBoard,
   createBoard,
   editBoard,
   deleteBoard,
-  getBoardById
+  getBoardById,
+  changeColumnColor,
 }

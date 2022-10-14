@@ -13,27 +13,29 @@ app.use(express.json());
 const { authRouter } = require('./routers/authRouter');
 const { boardRouter } = require('./routers/boardRouter');
 const { taskRouter } = require('./routers/taskRouter');
+const { commentRouter } = require('./routers/commentRouter');
+const { userRouter } = require('./routers/userRouter');
 
 app.use('/api/auth', authRouter);
 app.use('/api/board', boardRouter);
 app.use('/api/task', taskRouter);
-
-app.listen(port, () => {
-  console.log(`> Example app listening on port ${port}`)
-  db.connect();
-});
+app.use('/api/comment', commentRouter);
+app.use('/api/user', userRouter);
 
 
+db.connect();
 
-// const start = async () => {
-//   try {
-//
-//   } catch (err) {
-//     console.error(`Error on server startup: ${err.message}`);
-//   }
-// };
-//
-// start();
+const start = async () => {
+  try {
+    app.listen(port, () => {
+      console.log(`> Example app listening on port ${port}`)
+    });
+  } catch (err) {
+    console.error(`Error on server startup: ${err.message}`);
+  }
+};
+
+start();
 
 function errorHandler(err, req, res) {
   res.status(500).send({ message: err, status: 500 });
