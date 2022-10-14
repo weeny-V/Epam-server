@@ -121,7 +121,7 @@ const deleteTask = async (req, res, next) => {
       });
     }
 
-    await Comment.deleteMany({ taskID });
+    await Comment.deleteMany({ taskID: taskID });
 
     return res.status(200).send({
       message: 'Tas successfully deleted',
